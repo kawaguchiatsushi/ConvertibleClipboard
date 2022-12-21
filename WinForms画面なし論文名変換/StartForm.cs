@@ -101,7 +101,7 @@ namespace WinForms画面なし論文名変換
             
         }
 
-        private void ClickMethod(Clipboardmode clipboardmode)
+        private void ClipMethod(Clipboardmode clipboardmode)
         {
             if (clipboardmode == Clipboardmode.NomalMode) return;
             try
@@ -170,7 +170,7 @@ namespace WinForms画面なし論文名変換
             {
                 if (data != null)
                 {
-                    ClickMethod(clipboardmode);
+                    ClipMethod(clipboardmode);
                 }
                 m.Result = IntPtr.Zero;
             }
