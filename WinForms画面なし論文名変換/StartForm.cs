@@ -11,23 +11,32 @@ namespace WinForms画面なし論文名変換
         NotifyIcon? notifyIcon;
         
         public static int maxCharCount = 50;
+
+        /// <summary>
+        /// Holds three modes for clipboard conversion.
+        /// </summary>
         public enum Clipboardmode
         {
             LineBreakDeleteMode,
             FileMode,
             NomalMode,
         }
+        /// <summary>
+        /// Class for holding mode changes.
+        /// </summary>
         public static Clipboardmode clipboardmode;
-        public static bool isfilemode = true;
 
         string globaltxt = "";
+
         IDataObject data = Clipboard.GetDataObject();
+        
         ///// <summary>
         ///// Places the given window in the system-maintained clipboard format listener list.
         ///// </summary>
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool AddClipboardFormatListener(IntPtr hwnd);
+
 
         ///// <summary>
         ///// Removes the given window from the system-maintained clipboard format listener list.
@@ -36,6 +45,7 @@ namespace WinForms画面なし論文名変換
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool RemoveClipboardFormatListener(IntPtr hwnd);
 
+
         ///// <summary>
         ///// Sent when the contents of the clipboard have changed.
         ///// </summary>
@@ -43,8 +53,6 @@ namespace WinForms画面なし論文名変換
 
         public StartForm()
         {
-
-            
             this.ShowInTaskbar = false;
             this.SetComponents();
 
@@ -60,6 +68,7 @@ namespace WinForms画面なし論文名変換
             ToolStripMenuItem toolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem.Text = "&終了";
             toolStripMenuItem.Click += ToolStripMenuItem_Click;
+            
             ToolStripMenuItem toolStripMenuItem_setting = new ToolStripMenuItem();
             toolStripMenuItem_setting.Text = "&設定変更";
             toolStripMenuItem_setting.Click += ToolStripMenuItem_setting_Click;
@@ -88,7 +97,11 @@ namespace WinForms画面なし論文名変換
             Application.Exit();
         }
 
-
+        /// <summary>
+        /// Display retained clipboard text with notifyIcon.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NotifyIcon_Click(object? sender, EventArgs e)
         {
             MouseEventArgs me = (MouseEventArgs)e;
@@ -101,7 +114,11 @@ namespace WinForms画面なし論文名変換
             
         }
 
-        private void ClipMethod(Clipboardmode clipboardmode)
+        /// <summary>
+        /// main function
+        /// </summary>
+        /// <param name="clipboardmode"></param>
+        private void ClipFunction(Clipboardmode clipboardmode)
         {
             if (clipboardmode == Clipboardmode.NomalMode) return;
             try
@@ -170,7 +187,7 @@ namespace WinForms画面なし論文名変換
             {
                 if (data != null)
                 {
-                    ClipMethod(clipboardmode);
+                    ClipFunction(clipboardmode);
                 }
                 m.Result = IntPtr.Zero;
             }
