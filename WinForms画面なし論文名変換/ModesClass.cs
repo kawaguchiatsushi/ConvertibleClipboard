@@ -8,6 +8,10 @@ namespace WinForms画面なし論文名変換
         FileMode,
         NomalMode,
     }
+
+    /// <summary>
+    /// Retention of variables in settings. 
+    /// </summary>
     public class ModesClass
     {
         private readonly string fileMode_Name = "file保存形式";
@@ -23,11 +27,14 @@ namespace WinForms画面なし論文名変換
 
         public string IconName;
 
+        public int MaxCharCount;
+
         public ModesClass()
         {
             this.ModeName = this.fileMode_Name;
             this.IconName = this.fileMode_Icon;
             this.ClipBMode = Clipboardmode.FileMode;
+            this.MaxCharCount = Properties.Settings.Default.maxCharCount;
         }
 
 

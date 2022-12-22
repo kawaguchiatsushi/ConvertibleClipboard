@@ -5,13 +5,13 @@
         public SettingForm()
         {
             InitializeComponent();
-            StartForm.maxCharCount = Properties.Settings.Default.maxCharCount;
-            NumericCharCount.Value = StartForm.maxCharCount;
+            StartForm.ModesClass.MaxCharCount = Properties.Settings.Default.maxCharCount;
+            NumericCharCount.Value = StartForm.ModesClass.MaxCharCount;
         }
 
         private void NumericCharCount_ValueChanged(object sender, EventArgs e)
         {
-            StartForm.maxCharCount = Convert.ToInt16(NumericCharCount.Value);
+            StartForm.ModesClass.MaxCharCount = Convert.ToInt16(NumericCharCount.Value);
         }
 
         private void labelClose_Click(object sender, EventArgs e)

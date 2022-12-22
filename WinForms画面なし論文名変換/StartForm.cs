@@ -1,16 +1,14 @@
-using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 
 namespace WinForms画面なし論文名変換
 {
-    
+
     public partial class StartForm : Form
     {
         private readonly SettingForm settingForm = new();
         public static NotifyIcon? notifyIcon;
         readonly CharLangCheckClass charLang = new();
-        public static int maxCharCount = 50;
+       
 
         /// <summary>
         /// Holds three modes for clipboard conversion.
@@ -19,8 +17,7 @@ namespace WinForms画面なし論文名変換
        
 
         string globaltxt = "";
-
-        IDataObject data = Clipboard.GetDataObject();
+        readonly IDataObject data = Clipboard.GetDataObject();
         
         ///// <summary>
         ///// Places the given window in the system-maintained clipboard format listener list.
@@ -47,28 +44,32 @@ namespace WinForms画面なし論文名変換
         {
             this.ShowInTaskbar = false;
             this.SetComponents();
-            
-
         }
         private void SetComponents()
         {
-            notifyIcon = new NotifyIcon();
-            notifyIcon.Icon = new Icon(ModesClass.IconName);
-            notifyIcon.Visible = true;
-            notifyIcon.Text = ModesClass.ModeName;
+            notifyIcon = new NotifyIcon
+            {
+                Icon = new Icon(ModesClass.IconName),
+                Visible = true,
+                Text = ModesClass.ModeName
+            };
 
-            ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
-            ToolStripMenuItem toolStripMenuItem = new ToolStripMenuItem();
-            toolStripMenuItem.Text = "&終了";
-            toolStripMenuItem.Click += ToolStripMenuItem_Click;
-            
-            ToolStripMenuItem toolStripMenuItem_setting = new ToolStripMenuItem();
-            toolStripMenuItem_setting.Text = "&設定変更";
+            ContextMenuStrip contextMenuStrip = new();
+            ToolStripMenuItem toolStripMenuItem_close = new()
+            {
+                Text = "&終了"
+            };
+            toolStripMenuItem_close.Click += ToolStripMenuItem_close_Click;
+
+            ToolStripMenuItem toolStripMenuItem_setting = new()
+            {
+                Text = "&設定変更"
+            };
             toolStripMenuItem_setting.Click += ToolStripMenuItem_setting_Click;
 
-            contextMenuStrip.Items.Add(toolStripMenuItem);
+            contextMenuStrip.Items.Add(toolStripMenuItem_close);
             contextMenuStrip.Items.Add(toolStripMenuItem_setting);
-
+            
             notifyIcon.ContextMenuStrip = contextMenuStrip;
 
 
@@ -84,23 +85,37 @@ namespace WinForms画面なし論文名変換
             settingForm.Visible = true;
         }
 
-        private void ToolStripMenuItem_Click(object? sender, EventArgs e)
+        private void ToolStripMenuItem_close_Click(object? sender, EventArgs e)
         {
             RemoveClipboardFormatListener(this.Handle);
+            Properties.Settings.Default.maxCharCount = ModesClass.MaxCharCount;
+            Properties.Settings.Default.Save();
             Application.Exit();
         }
 
         /// <summary>
-        /// Display retained clipboard text with notifyIcon.
+        /// if Clicked MouseButtonsLeft,
+        ///      Display retained clipboard text with notifBallon.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void NotifyIcon_Click(object? sender, EventArgs e)
         {
             MouseEventArgs me = (MouseEventArgs)e;
-            if (notifyIcon!=null && me.Button == MouseButtons.Left && globaltxt.Length > 0) 
+            if (me.Button == MouseButtons.Left && globaltxt.Length > 0) 
             {
-                notifyIcon.BalloonTipTitle = "MODE:" +ModesClass.ModeName;
+                NotifyBallonFnc();
+            }
+            
+        }
+        /// <summary>
+        /// Display retained clipboard text with notifBallon.
+        /// </summary>
+        private void NotifyBallonFnc()
+        {
+            if (notifyIcon != null) 
+            {
+                notifyIcon.BalloonTipTitle = "MODE:" + ModesClass.ModeName;
                 notifyIcon.BalloonTipText = globaltxt;
                 notifyIcon.ShowBalloonTip(5000);
             }
@@ -110,10 +125,9 @@ namespace WinForms画面なし論文名変換
         /// <summary>
         /// main function
         /// </summary>
-        /// <param name="clipboardmode"></param>
-        private void ClipFunction(Clipboardmode clipboardmode)
+        private void ClipFunction()
         {
-            if (clipboardmode == Clipboardmode.NomalMode) return;
+            if (ModesClass.ClipBMode == Clipboardmode.NomalMode) return;
             try
             {
                 if (data.GetDataPresent(typeof(string)))
@@ -129,18 +143,16 @@ namespace WinForms画面なし論文名変換
                     }
                     if (ModesClass.ClipBMode==Clipboardmode.FileMode) 
                     {
-                        globaltxt = charLang.FileModeReplacement(globaltxt, maxCharCount);   
+                        globaltxt = charLang.FileModeReplacement(globaltxt, ModesClass.MaxCharCount);   
                     }
                     
                     RemoveClipboardFormatListener(this.Handle);
 
-                    if (notifyIcon!=null && globaltxt != "" && globaltxt != null)
+                    if (globaltxt != "" && globaltxt != null)
                     {
                         Clipboard.Clear();
                         Clipboard.SetDataObject(globaltxt, true);
-                        notifyIcon.BalloonTipTitle = "MODE:"+ ModesClass.ModeName;
-                        notifyIcon.BalloonTipText = globaltxt;
-                        notifyIcon.ShowBalloonTip(5000);
+                        NotifyBallonFnc();
                     }
                     AddClipboardFormatListener(Handle);
                 }
@@ -162,7 +174,7 @@ namespace WinForms画面なし論文名変換
             {
                 if (data != null)
                 {
-                    ClipFunction(ModesClass.ClipBMode);
+                    ClipFunction();
                 }
                 m.Result = IntPtr.Zero;
             }
