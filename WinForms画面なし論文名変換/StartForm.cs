@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace WinForms画面なし論文名変換
@@ -102,12 +103,13 @@ namespace WinForms画面なし論文名変換
         private void NotifyIcon_Click(object? sender, EventArgs e)
         {
             MouseEventArgs me = (MouseEventArgs)e;
-            if (me.Button == MouseButtons.Left && globaltxt.Length > 0) 
+            if (me.Button == MouseButtons.Left && globaltxt.Length > 0)
             {
                 NotifyBallonFnc();
             }
-            
         }
+
+
         /// <summary>
         /// Display retained clipboard text with notifBallon.
         /// </summary>
@@ -143,7 +145,7 @@ namespace WinForms画面なし論文名変換
                     }
                     if (ModesClass.ClipBMode==Clipboardmode.FileMode) 
                     {
-                        globaltxt = charLang.FileModeReplacement(globaltxt, ModesClass.MaxCharCount);   
+                        globaltxt = CharLangCheckClass.FileModeReplacement(globaltxt, ModesClass.MaxCharCount);   
                     }
                     
                     RemoveClipboardFormatListener(this.Handle);
