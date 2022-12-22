@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <Folder Include="icon\" />
+    <Folder Include="readmeimages\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +29,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="icon\replacementmode.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icon\starticon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="icon\えんぴつ付きのノートアイコン.ico">
