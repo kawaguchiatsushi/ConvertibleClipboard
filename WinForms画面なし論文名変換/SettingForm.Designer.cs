@@ -43,7 +43,7 @@
             // 
             this.labelClose.AutoSize = true;
             this.labelClose.Font = new System.Drawing.Font("メイリオ", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelClose.Location = new System.Drawing.Point(184, 9);
+            this.labelClose.Location = new System.Drawing.Point(255, 9);
             this.labelClose.Name = "labelClose";
             this.labelClose.Size = new System.Drawing.Size(28, 28);
             this.labelClose.TabIndex = 0;
@@ -53,11 +53,12 @@
             // maxcountlabel
             // 
             this.maxcountlabel.AutoSize = true;
-            this.maxcountlabel.Location = new System.Drawing.Point(12, 144);
+            this.maxcountlabel.Font = new System.Drawing.Font("Yu Gothic UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.maxcountlabel.Location = new System.Drawing.Point(12, 174);
             this.maxcountlabel.Name = "maxcountlabel";
-            this.maxcountlabel.Size = new System.Drawing.Size(67, 15);
+            this.maxcountlabel.Size = new System.Drawing.Size(141, 20);
             this.maxcountlabel.TabIndex = 1;
-            this.maxcountlabel.Text = "最大文字数";
+            this.maxcountlabel.Text = "ファイル名最大文字数";
             // 
             // radioButton_2
             // 
@@ -65,8 +66,9 @@
             this.radioButton_2.Checked = true;
             this.radioButton_2.Location = new System.Drawing.Point(7, 47);
             this.radioButton_2.Name = "radioButton_2";
-            this.radioButton_2.Size = new System.Drawing.Size(88, 19);
+            this.radioButton_2.Size = new System.Drawing.Size(107, 24);
             this.radioButton_2.TabIndex = 3;
+            this.radioButton_2.TabStop = true;
             this.radioButton_2.Text = "file保存形式";
             this.radioButton_2.UseVisualStyleBackColor = true;
             this.radioButton_2.CheckedChanged += new System.EventHandler(this.radioButton_2_CheckedChanged);
@@ -76,7 +78,7 @@
             this.radioButton_1.AutoSize = true;
             this.radioButton_1.Location = new System.Drawing.Point(7, 22);
             this.radioButton_1.Name = "radioButton_1";
-            this.radioButton_1.Size = new System.Drawing.Size(187, 19);
+            this.radioButton_1.Size = new System.Drawing.Size(231, 24);
             this.radioButton_1.TabIndex = 4;
             this.radioButton_1.Text = "クリップボード文字列の改行を削除";
             this.radioButton_1.UseVisualStyleBackColor = true;
@@ -84,9 +86,9 @@
             // 
             // NumericCharCount
             // 
-            this.NumericCharCount.Location = new System.Drawing.Point(70, 162);
+            this.NumericCharCount.Location = new System.Drawing.Point(12, 197);
             this.NumericCharCount.Name = "NumericCharCount";
-            this.NumericCharCount.Size = new System.Drawing.Size(120, 23);
+            this.NumericCharCount.Size = new System.Drawing.Size(141, 23);
             this.NumericCharCount.TabIndex = 5;
             this.NumericCharCount.ValueChanged += new System.EventHandler(this.NumericCharCount_ValueChanged);
             // 
@@ -95,9 +97,10 @@
             this.groupBox1.Controls.Add(this.radioButton_nomal);
             this.groupBox1.Controls.Add(this.radioButton_1);
             this.groupBox1.Controls.Add(this.radioButton_2);
+            this.groupBox1.Font = new System.Drawing.Font("Yu Gothic UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.groupBox1.Location = new System.Drawing.Point(12, 41);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 100);
+            this.groupBox1.Size = new System.Drawing.Size(271, 118);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "設定変更";
@@ -107,7 +110,7 @@
             this.radioButton_nomal.AutoSize = true;
             this.radioButton_nomal.Location = new System.Drawing.Point(6, 72);
             this.radioButton_nomal.Name = "radioButton_nomal";
-            this.radioButton_nomal.Size = new System.Drawing.Size(58, 19);
+            this.radioButton_nomal.Size = new System.Drawing.Size(69, 24);
             this.radioButton_nomal.TabIndex = 5;
             this.radioButton_nomal.Text = "nomal";
             this.radioButton_nomal.UseVisualStyleBackColor = true;
@@ -117,7 +120,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(228, 208);
+            this.ClientSize = new System.Drawing.Size(295, 300);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.NumericCharCount);
             this.Controls.Add(this.maxcountlabel);

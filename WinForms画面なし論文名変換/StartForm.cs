@@ -8,23 +8,15 @@ namespace WinForms画面なし論文名変換
     public partial class StartForm : Form
     {
         private readonly SettingForm settingForm = new();
-        NotifyIcon? notifyIcon;
-        
+        public static NotifyIcon? notifyIcon;
+        readonly CharLangCheckClass charLang = new();
         public static int maxCharCount = 50;
 
         /// <summary>
         /// Holds three modes for clipboard conversion.
         /// </summary>
-        public enum Clipboardmode
-        {
-            LineBreakDeleteMode,
-            FileMode,
-            NomalMode,
-        }
-        /// <summary>
-        /// Class for holding mode changes.
-        /// </summary>
-        public static Clipboardmode clipboardmode;
+        public static ModesClass ModesClass = new();
+       
 
         string globaltxt = "";
 
@@ -55,14 +47,15 @@ namespace WinForms画面なし論文名変換
         {
             this.ShowInTaskbar = false;
             this.SetComponents();
+            
 
         }
         private void SetComponents()
         {
             notifyIcon = new NotifyIcon();
-            notifyIcon.Icon = new Icon(@"icon\クリップ.ico");
+            notifyIcon.Icon = new Icon(ModesClass.IconName);
             notifyIcon.Visible = true;
-            notifyIcon.Text = "マルチクリップモード";
+            notifyIcon.Text = ModesClass.ModeName;
 
             ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
             ToolStripMenuItem toolStripMenuItem = new ToolStripMenuItem();
@@ -83,7 +76,7 @@ namespace WinForms画面なし論文名変換
             AddClipboardFormatListener(Handle);
 
             settingForm.Visible = false;
-            clipboardmode = Clipboardmode.FileMode;
+            
         }
 
         private void ToolStripMenuItem_setting_Click(object? sender, EventArgs e) 
@@ -107,7 +100,7 @@ namespace WinForms画面なし論文名変換
             MouseEventArgs me = (MouseEventArgs)e;
             if (notifyIcon!=null && me.Button == MouseButtons.Left && globaltxt.Length > 0) 
             {
-                notifyIcon.BalloonTipTitle = "クリップボード";
+                notifyIcon.BalloonTipTitle = "MODE:" +ModesClass.ModeName;
                 notifyIcon.BalloonTipText = globaltxt;
                 notifyIcon.ShowBalloonTip(5000);
             }
@@ -129,25 +122,14 @@ namespace WinForms画面なし論文名変換
                     
                     globaltxt = (string)Clipboard.GetData(DataFormats.Text);
 
-                    if (clipboardmode == Clipboardmode.LineBreakDeleteMode || clipboardmode == Clipboardmode.FileMode)
+                    if (ModesClass.ClipBMode == Clipboardmode.LineBreakDeleteMode || ModesClass.ClipBMode == Clipboardmode.FileMode)
                     {
-                        globaltxt = globaltxt.Replace(Environment.NewLine, " ");
-                        globaltxt = globaltxt.Replace("\r", " ").Replace("\n", " ");
-
+                        
+                        globaltxt = charLang.MyReplacement(globaltxt);
                     }
-                    if (clipboardmode==Clipboardmode.FileMode) 
+                    if (ModesClass.ClipBMode==Clipboardmode.FileMode) 
                     {
-                        Regex reg = new Regex(
-                        "[\\x00-\\x1f<>:\"/\\\\|?*]|^(CON|PRN|AUX|NUL|COM[0-9]|LPT[0-9]|CLOCK\\$)(\\.|$)|[\\. ]$"
-                        , RegexOptions.IgnoreCase
-                        );
-                        globaltxt = reg.Replace(globaltxt, "_");
-                        globaltxt = globaltxt.Replace(" ", "_").Replace("　", "_");
-                        int len = globaltxt.Length;
-                        if (len > maxCharCount)
-                        {
-                            globaltxt = globaltxt.Substring(0, maxCharCount);
-                        }
+                        globaltxt = charLang.FileModeReplacement(globaltxt, maxCharCount);   
                     }
                     
                     RemoveClipboardFormatListener(this.Handle);
@@ -156,14 +138,7 @@ namespace WinForms画面なし論文名変換
                     {
                         Clipboard.Clear();
                         Clipboard.SetDataObject(globaltxt, true);
-                        if (clipboardmode == Clipboardmode.FileMode)
-                        {
-                            notifyIcon.BalloonTipTitle = "file保存形式";
-                        }
-                        else if (clipboardmode == Clipboardmode.LineBreakDeleteMode)
-                        {
-                            notifyIcon.BalloonTipTitle = "クリップボード文字列の改行を削除";
-                        }
+                        notifyIcon.BalloonTipTitle = "MODE:"+ ModesClass.ModeName;
                         notifyIcon.BalloonTipText = globaltxt;
                         notifyIcon.ShowBalloonTip(5000);
                     }
@@ -187,7 +162,7 @@ namespace WinForms画面なし論文名変換
             {
                 if (data != null)
                 {
-                    ClipFunction(clipboardmode);
+                    ClipFunction(ModesClass.ClipBMode);
                 }
                 m.Result = IntPtr.Zero;
             }
