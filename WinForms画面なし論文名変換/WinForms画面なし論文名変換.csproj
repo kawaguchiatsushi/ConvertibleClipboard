@@ -9,8 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="readmeimages\**" />
+    <EmbeddedResource Remove="readmeimages\**" />
+    <None Remove="readmeimages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="icon\" />
-    <Folder Include="readmeimages\" />
   </ItemGroup>
 
   <ItemGroup>
