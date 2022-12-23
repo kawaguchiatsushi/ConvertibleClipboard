@@ -48,7 +48,7 @@
             this.labelClose.Size = new System.Drawing.Size(28, 28);
             this.labelClose.TabIndex = 0;
             this.labelClose.Text = "✕";
-            this.labelClose.Click += new System.EventHandler(this.labelClose_Click);
+            this.labelClose.Click += new System.EventHandler(this.LabelClose_Click);
             // 
             // maxcountlabel
             // 
@@ -71,7 +71,7 @@
             this.radioButton_2.TabStop = true;
             this.radioButton_2.Text = "file保存形式";
             this.radioButton_2.UseVisualStyleBackColor = true;
-            this.radioButton_2.CheckedChanged += new System.EventHandler(this.radioButton_2_CheckedChanged);
+            this.radioButton_2.CheckedChanged += new System.EventHandler(this.RadioButton_Filemode_CheckedChanged);
             // 
             // radioButton_1
             // 
@@ -82,7 +82,7 @@
             this.radioButton_1.TabIndex = 4;
             this.radioButton_1.Text = "クリップボード文字列の改行を削除";
             this.radioButton_1.UseVisualStyleBackColor = true;
-            this.radioButton_1.CheckedChanged += new System.EventHandler(this.radioButton_1_CheckedChanged);
+            this.radioButton_1.CheckedChanged += new System.EventHandler(this.RadioButton_ReplacementofLineBlank_CheckedChanged);
             // 
             // NumericCharCount
             // 
@@ -114,7 +114,7 @@
             this.radioButton_nomal.TabIndex = 5;
             this.radioButton_nomal.Text = "nomal";
             this.radioButton_nomal.UseVisualStyleBackColor = true;
-            this.radioButton_nomal.CheckedChanged += new System.EventHandler(this.radioButton_nomal_CheckedChanged);
+            this.radioButton_nomal.CheckedChanged += new System.EventHandler(this.RadioButton_nomal_CheckedChanged);
             // 
             // SettingForm
             // 

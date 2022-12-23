@@ -14,38 +14,26 @@
             StartForm.ModesClass.MaxCharCount = Convert.ToInt16(NumericCharCount.Value);
         }
 
-        private void labelClose_Click(object sender, EventArgs e)
+        private void LabelClose_Click(object sender, EventArgs e)
         {
             this.Visible = false;
         }
 
-        private void radioButton_1_CheckedChanged(object sender, EventArgs e)
+        private void RadioButton_ReplacementofLineBlank_CheckedChanged(object sender, EventArgs e)
         {
             StartForm.ModesClass.ClipBMode = Clipboardmode.LineBreakDeleteMode;
-            
-            //ChangeMode();
         }
 
-        private void radioButton_2_CheckedChanged(object sender, EventArgs e)
+        private void RadioButton_Filemode_CheckedChanged(object sender, EventArgs e)
         {
             StartForm.ModesClass.ClipBMode = Clipboardmode.FileMode;
-            //ChangeMode();
         }
 
-        private void radioButton_nomal_CheckedChanged(object sender, EventArgs e)
+        private void RadioButton_nomal_CheckedChanged(object sender, EventArgs e)
         {
             StartForm.ModesClass.ClipBMode = Clipboardmode.NomalMode;
-            //ChangeMode();
         }
 
 
-        //private static void ChangeMode()
-        //{
-        //    if (StartForm.notifyIcon != null)
-        //    {
-        //        StartForm.notifyIcon.Icon = new Icon(StartForm.ModesClass.IconName);
-        //        StartForm.notifyIcon.Text = StartForm.ModesClass.ModeName;
-        //    }
-        //}
     }
 }
