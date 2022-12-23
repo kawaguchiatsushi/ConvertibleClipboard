@@ -11,7 +11,7 @@
 ![icon](/readmeimages/readmeimage_2.png)
 # ３つのモードを選択
 ![icon](/readmeimages/readmeimage_3.png)
-###   １、クリップボードテキストの改行コードを削除し空白に置換
+###   １、クリップボードテキストの改行コードを削除し、アルファベットなどの英文の場合、空白に置換。日本語などのアルファベット以外の文字が主の場合、改行コードや空白処理を修正する。
 ![icon](/readmeimages/readmeimage_7.png)
 ###   ２、クリップボードテキストをファイル保存可能な形に変換（最大文字数を設定可能　デフォルトは５０文字）
 ![icon](/readmeimages/readmeimage_5.png)
