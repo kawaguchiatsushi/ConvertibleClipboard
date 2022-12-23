@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 
 namespace WinForms画面なし論文名変換
 {
@@ -29,12 +30,20 @@ namespace WinForms画面なし論文名変換
 
         public int MaxCharCount;
 
+        public NotifyIcon notifyIcon;
+
         public ModesClass()
         {
             this.ModeName = this.fileMode_Name;
             this.IconName = this.fileMode_Icon;
             this.ClipBMode = Clipboardmode.FileMode;
             this.MaxCharCount = Properties.Settings.Default.maxCharCount;
+            this.notifyIcon = new NotifyIcon
+            {
+                Icon = new Icon(this.IconName),
+                Visible = true,
+                Text = this.ModeName
+            };
         }
 
 
@@ -48,23 +57,40 @@ namespace WinForms画面なし論文名変換
                 this.clipboardmode = value;
                 if (this.clipboardmode == Clipboardmode.LineBreakDeleteMode)
                 {
-                    this.ModeName = this.replacementMode_Name;
-                    this.IconName = this.replacementMode_Icon;
+                        this.ModeName = this.replacementMode_Name;
+                        this.IconName = this.replacementMode_Icon;
+                        ChangeMode();
                 }
                 else if(this.clipboardmode == Clipboardmode.FileMode)
                 {
-                    this.ModeName = this.fileMode_Name;
-                    this.IconName = this.fileMode_Icon;
+                 
+                        this.ModeName = this.fileMode_Name;
+                        this.IconName = this.fileMode_Icon;
+                        ChangeMode();
+                    
                 }
                 else if(this.clipboardmode == Clipboardmode.NomalMode)
                 {
-                    this.ModeName = this.nomalMode_Name;
-                    this.IconName = this.nomalMode_Icon;
+                        this.ModeName = this.nomalMode_Name;
+                        this.IconName = this.nomalMode_Icon;
+                        ChangeMode();                    
                 }
             }
         }
 
+        public void ChangeMode()
+        {
+            if (this.notifyIcon!=null)
+            {
+                this.notifyIcon.Text = this.ModeName;
+                this.notifyIcon.Icon = new Icon(this.IconName);
+                
+            }
+           
+        }
         
+
+
 
     }
 

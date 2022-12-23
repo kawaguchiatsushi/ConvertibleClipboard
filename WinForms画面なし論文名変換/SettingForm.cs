@@ -22,29 +22,30 @@
         private void radioButton_1_CheckedChanged(object sender, EventArgs e)
         {
             StartForm.ModesClass.ClipBMode = Clipboardmode.LineBreakDeleteMode;
-            ChangeMode();
+            
+            //ChangeMode();
         }
 
         private void radioButton_2_CheckedChanged(object sender, EventArgs e)
         {
             StartForm.ModesClass.ClipBMode = Clipboardmode.FileMode;
-            ChangeMode();
+            //ChangeMode();
         }
 
         private void radioButton_nomal_CheckedChanged(object sender, EventArgs e)
         {
             StartForm.ModesClass.ClipBMode = Clipboardmode.NomalMode;
-            ChangeMode();
+            //ChangeMode();
         }
 
 
-        private static void ChangeMode()
-        {
-            if (StartForm.notifyIcon != null)
-            {
-                StartForm.notifyIcon.Icon = new Icon(StartForm.ModesClass.IconName);
-                StartForm.notifyIcon.Text = StartForm.ModesClass.ModeName;
-            }
-        }
+        //private static void ChangeMode()
+        //{
+        //    if (StartForm.notifyIcon != null)
+        //    {
+        //        StartForm.notifyIcon.Icon = new Icon(StartForm.ModesClass.IconName);
+        //        StartForm.notifyIcon.Text = StartForm.ModesClass.ModeName;
+        //    }
+        //}
     }
 }

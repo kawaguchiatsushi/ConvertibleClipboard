@@ -141,10 +141,10 @@
 
         private Label labelClose;
         private Label maxcountlabel;
-        private RadioButton radioButton_2;
-        private RadioButton radioButton_1;
+        public RadioButton radioButton_2;
+        public RadioButton radioButton_1;
         private NumericUpDown NumericCharCount;
         private GroupBox groupBox1;
-        private RadioButton radioButton_nomal;
+        public RadioButton radioButton_nomal;
     }
 }

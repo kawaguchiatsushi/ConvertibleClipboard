@@ -1,25 +1,26 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
+
 
 namespace WinForms画面なし論文名変換
 {
 
     public partial class StartForm : Form
     {
-        private readonly SettingForm settingForm = new();
-        public static NotifyIcon? notifyIcon;
+        readonly SettingForm settingForm = new();
+        
         readonly CharLangCheckClass charLang = new();
-       
 
         /// <summary>
         /// Holds three modes for clipboard conversion.
         /// </summary>
         public static ModesClass ModesClass = new();
-       
+
 
         string globaltxt = "";
         readonly IDataObject data = Clipboard.GetDataObject();
-        
+
         ///// <summary>
         ///// Places the given window in the system-maintained clipboard format listener list.
         ///// </summary>
@@ -41,20 +42,21 @@ namespace WinForms画面なし論文名変換
         ///// </summary>
         private const int WM_CLIPBOARDUPDATE = 0x031D;
 
+
+
+
+
+
         public StartForm()
         {
+            InitializeComponent();
             this.ShowInTaskbar = false;
             this.SetComponents();
+
         }
         private void SetComponents()
         {
-            notifyIcon = new NotifyIcon
-            {
-                Icon = new Icon(ModesClass.IconName),
-                Visible = true,
-                Text = ModesClass.ModeName
-            };
-
+            
             ContextMenuStrip contextMenuStrip = new();
             ToolStripMenuItem toolStripMenuItem_close = new()
             {
@@ -70,20 +72,37 @@ namespace WinForms画面なし論文名変換
 
             contextMenuStrip.Items.Add(toolStripMenuItem_close);
             contextMenuStrip.Items.Add(toolStripMenuItem_setting);
-            
-            notifyIcon.ContextMenuStrip = contextMenuStrip;
+
+            ModesClass.notifyIcon.ContextMenuStrip = contextMenuStrip;
 
 
-            notifyIcon.Click += NotifyIcon_Click;
+            ModesClass.notifyIcon.Click += NotifyIcon_Click;
+            ModesClass.notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
             AddClipboardFormatListener(Handle);
 
+ 
             settingForm.Visible = false;
-            
+
         }
 
-        private void ToolStripMenuItem_setting_Click(object? sender, EventArgs e) 
+
+
+        private void ToolStripMenuItem_setting_Click(object? sender, EventArgs e)
         {
+            if(ModesClass.ClipBMode == Clipboardmode.LineBreakDeleteMode)
+            {
+                settingForm.radioButton_1.Checked = true;
+            }
+            else if(ModesClass.ClipBMode== Clipboardmode.FileMode) 
+            {
+                settingForm.radioButton_2.Checked = true;
+            }
+            else
+            {
+                settingForm.radioButton_nomal.Checked = true;
+            }
             settingForm.Visible = true;
+            
         }
 
         private void ToolStripMenuItem_close_Click(object? sender, EventArgs e)
@@ -109,19 +128,40 @@ namespace WinForms画面なし論文名変換
             }
         }
 
+        private void NotifyIcon_DoubleClick(object? sender,EventArgs e)
+        {
+            if (ModesClass.notifyIcon != null)
+            {
+                if (ModesClass.ClipBMode == Clipboardmode.FileMode)
+                {
+                    ModesClass.ClipBMode = Clipboardmode.LineBreakDeleteMode;
+                    settingForm.radioButton_1.Checked = true;
+                }
+                else if(ModesClass.ClipBMode == Clipboardmode.LineBreakDeleteMode)
+                {
+                    ModesClass.ClipBMode = Clipboardmode.NomalMode;
+                    settingForm.radioButton_nomal.Checked = true;
+                }
+                else
+                {
+                    ModesClass.ClipBMode = Clipboardmode.FileMode;
+                    settingForm.radioButton_2.Checked = true;
+                }
+            }
+        }
 
         /// <summary>
         /// Display retained clipboard text with notifBallon.
         /// </summary>
         private void NotifyBallonFnc()
         {
-            if (notifyIcon != null) 
+            if (ModesClass.notifyIcon != null)
             {
-                notifyIcon.BalloonTipTitle = "MODE:" + ModesClass.ModeName;
-                notifyIcon.BalloonTipText = globaltxt;
-                notifyIcon.ShowBalloonTip(5000);
+                ModesClass.notifyIcon.BalloonTipTitle = "MODE:" + ModesClass.ModeName;
+                ModesClass.notifyIcon.BalloonTipText = globaltxt;
+                ModesClass.notifyIcon.ShowBalloonTip(5000);
             }
-            
+
         }
 
         /// <summary>
@@ -134,20 +174,24 @@ namespace WinForms画面なし論文名変換
             {
                 if (data.GetDataPresent(typeof(string)))
                 {
-                    if (globaltxt == null)return;
-                    
+                    if (globaltxt == null)
+                    {
+                        throw new ArgumentNullException();
+                    }
+
+
                     globaltxt = (string)Clipboard.GetData(DataFormats.Text);
 
                     if (ModesClass.ClipBMode == Clipboardmode.LineBreakDeleteMode || ModesClass.ClipBMode == Clipboardmode.FileMode)
                     {
-                        
+
                         globaltxt = charLang.MyReplacement(globaltxt);
                     }
-                    if (ModesClass.ClipBMode==Clipboardmode.FileMode) 
+                    if (ModesClass.ClipBMode == Clipboardmode.FileMode)
                     {
-                        globaltxt = CharLangCheckClass.FileModeReplacement(globaltxt, ModesClass.MaxCharCount);   
+                        globaltxt = CharLangCheckClass.FileModeReplacement(globaltxt, ModesClass.MaxCharCount);
                     }
-                    
+
                     RemoveClipboardFormatListener(this.Handle);
 
                     if (globaltxt != "" && globaltxt != null)
@@ -156,7 +200,7 @@ namespace WinForms画面なし論文名変換
                         Clipboard.SetDataObject(globaltxt, true);
                         NotifyBallonFnc();
                     }
-                    AddClipboardFormatListener(Handle);
+                    AddClipboardFormatListener(this.Handle);
                 }
             }
             catch (ExternalException)
@@ -165,7 +209,12 @@ namespace WinForms画面なし論文名変換
             }
             catch (ArgumentException)
             {
+
                 return;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
             }
 
         }
@@ -183,5 +232,10 @@ namespace WinForms画面なし論文名変換
             else
                 base.WndProc(ref m);
         }
-    }
+
+
+           
+    }  
+
+    
 }

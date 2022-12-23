@@ -7,46 +7,31 @@ namespace WinForms画面なし論文名変換
 {
     internal class CharLangCheckClass
     {
+        static bool IsRoma(string s)
+        {
+            return Regex.IsMatch(s, @"^[0-9a-zA-Z]+$");
+        }
 
         /// <summary>
         /// Check for alphabetic characters at the beginning of a sentence
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        private string EngorNot(string text) 
+        private bool EngorNot(string text) 
         {
-            string en ="en";
-            string not = "not";
-            int txtleng = text.Length;
-            if (txtleng < 3) return "short";
-            int checkCount = 3;
 
-            if (3 < txtleng && txtleng < checkCount)
+            int txtleng = text.Length;
+            int checkCount = 10;
+            if (txtleng <= checkCount)
             {
-                for (int i = 0; i <= txtleng; i++)
-                {
-                    if (Regex.IsMatch(text[i].ToString(), @"^[a-zA-Z]+$")) 
-                    {
-                        
-                        return en;
-                    }
-                        
-                }
-            }
-            else 
-            {
-                for (int i = 0; i <= checkCount; i++)
-                {
-                    
-                    if (Regex.IsMatch(text[i].ToString(), @"^[a-zA-Z]+$"))
-                    { 
-                        return en;
-                    }                  
-                        
-                }
+                throw new IndexOutOfRangeException();
             }
             
-            return not;
+            if (IsRoma(text[0..(checkCount)])) 
+            {       
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -57,13 +42,13 @@ namespace WinForms画面なし論文名変換
         /// <returns></returns>
         public string MyReplacement(string text)
         {
-            if (EngorNot(text) == "short") return "short";
-            if (EngorNot(text) == "en")
+            
+            if (EngorNot(text))
             {
                 
                 text = text.Replace(Environment.NewLine, " ");
                 text = text.Replace("\r", " ").Replace("\n", " ");
-                
+                text = AdvancedReplacementforEngStrings(text);
                 return text;
             }
             else
@@ -94,14 +79,27 @@ namespace WinForms画面なし論文名変換
             }
             return text;
         }
+        private string AdvancedReplacementforEngStrings(string engText)
+        {
+            string replacedText = "";
+            /////
+            /// working state
+
+
+            ////
+            ///
+
+
+            return replacedText;
+        }
 
 
         private string AdvancedReplacementforJapaneseStrings(string jaText)
         {
             string replacedText = "";
-            jaText = jaText.Replace("\n","\n").Replace("\r","\n");
+            jaText = jaText.Replace("\n","\n").Replace("\r","\n").Replace("\n\r","\n");
             int len = jaText.Length;
-            if (len < 4) return jaText;
+            
             ///
             ///前後の連関を検索するために３文字でスライドさせる
             ///改行は、必要なところでとる。
@@ -130,12 +128,19 @@ namespace WinForms画面なし論文名変換
                     bool curNewline = currentChar == "\n";
                     bool aftNewline = afterChar == "\n";
 
-                    if (!prBrank && curBrank && !prBrank)
+                    
+
+                    if(prNewline && IsRoma(currentChar))
+                    {
+                        replacedText += " " + currentChar;
+                        continue;
+                    }    
+                    else if (!prBrank && curBrank && !prBrank)
                     {
 
                         ///
                         ///ここでローマ字ならば入れる。日本語ならばcontinue
-                        if (Regex.IsMatch(prevChar, @"^[a-zA-Z]+$") && Regex.IsMatch(afterChar, @"^[a-zA-Z]+$"))
+                        if (IsRoma(prevChar) && IsRoma(afterChar))
                         {
                             replacedText += currentChar;
                             continue;
@@ -151,7 +156,12 @@ namespace WinForms画面なし論文名変換
                     {
                         
                         replacedText += "\n";
+                        replacedText += "　";
                         //continue;
+                    }
+                    else if(prNewline & curNewline)
+                    {
+                        replacedText+= "　";
                     }
                     else if (curBrank & prNewline)
                     {
