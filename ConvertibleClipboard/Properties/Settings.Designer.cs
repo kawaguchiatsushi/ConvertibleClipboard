@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WinForms画面なし論文名変換.Properties {
+namespace ConvertibleClipboard.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

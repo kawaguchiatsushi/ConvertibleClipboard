@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using System.Diagnostics;
 
-namespace WinForms画面なし論文名変換
+namespace ConvertibleClipboard
 {
     internal class CharLangCheckClass
     {

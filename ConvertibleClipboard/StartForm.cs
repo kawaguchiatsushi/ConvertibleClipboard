@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 
-namespace WinForms画面なし論文名変換
+namespace ConvertibleClipboard
 {
 
     public partial class StartForm : Form

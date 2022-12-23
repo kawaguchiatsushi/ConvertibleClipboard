@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
-namespace WinForms画面なし論文名変換
+namespace ConvertibleClipboard
 {
     public enum Clipboardmode
     {

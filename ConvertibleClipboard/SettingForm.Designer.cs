@@ -1,4 +1,4 @@
-﻿namespace WinForms画面なし論文名変換
+﻿namespace ConvertibleClipboard
 {
     partial class SettingForm
     {
