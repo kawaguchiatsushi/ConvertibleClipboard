@@ -83,6 +83,7 @@ namespace ConvertibleClipboard
             if (this.notifyIcon!=null)
             {
                 this.notifyIcon.Text = this.ModeName;
+                this.notifyIcon.Icon.Dispose();
                 this.notifyIcon.Icon = new Icon(this.IconName);
                 
             }
