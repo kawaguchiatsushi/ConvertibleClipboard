@@ -56,32 +56,16 @@ namespace ConvertibleClipboard
         }
         private void SetComponents()
         {
-            
-            ContextMenuStrip contextMenuStrip = new();
-            ToolStripMenuItem toolStripMenuItem_close = new()
-            {
-                Text = "&終了"
-            };
-            toolStripMenuItem_close.Click += ToolStripMenuItem_close_Click;
+            ModesClass.toolStripMenuItem_close.Click += ToolStripMenuItem_close_Click;
 
-            ToolStripMenuItem toolStripMenuItem_setting = new()
-            {
-                Text = "&設定変更"
-            };
-            toolStripMenuItem_setting.Click += ToolStripMenuItem_setting_Click;
-
-            contextMenuStrip.Items.Add(toolStripMenuItem_close);
-            contextMenuStrip.Items.Add(toolStripMenuItem_setting);
-
-            ModesClass.notifyIcon.ContextMenuStrip = contextMenuStrip;
-
+            ModesClass.toolStripMenuItem_setting.Click += ToolStripMenuItem_setting_Click;
 
             ModesClass.notifyIcon.Click += NotifyIcon_Click;
             ModesClass.notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
             AddClipboardFormatListener(Handle);
 
- 
             settingForm.Visible = false;
+
 
         }
 
@@ -124,7 +108,7 @@ namespace ConvertibleClipboard
             MouseEventArgs me = (MouseEventArgs)e;
             if (me.Button == MouseButtons.Left && globaltxt.Length > 0)
             {
-                NotifyBallonFnc();
+                ModesClass.NotifyBallonFnc(globaltxt);
             }
         }
 
@@ -150,19 +134,7 @@ namespace ConvertibleClipboard
             }
         }
 
-        /// <summary>
-        /// Display retained clipboard text with notifBallon.
-        /// </summary>
-        private void NotifyBallonFnc()
-        {
-            if (ModesClass.notifyIcon != null)
-            {
-                ModesClass.notifyIcon.BalloonTipTitle = "MODE:" + ModesClass.ModeName;
-                ModesClass.notifyIcon.BalloonTipText = globaltxt;
-                ModesClass.notifyIcon.ShowBalloonTip(5000);
-            }
-
-        }
+        
 
         /// <summary>
         /// main function
@@ -198,7 +170,7 @@ namespace ConvertibleClipboard
                     {
                         Clipboard.Clear();
                         Clipboard.SetDataObject(globaltxt, true);
-                        NotifyBallonFnc();
+                        ModesClass.NotifyBallonFnc(globaltxt);
                     }
                     AddClipboardFormatListener(this.Handle);
                 }

@@ -24,6 +24,9 @@ namespace ConvertibleClipboard
         private readonly string nomalMode_Name = "nomal";
         private readonly string nomalMode_Icon = @"icon\normal.ico";
 
+        private readonly string toolItem_close_Text = "&終了";
+        private readonly string toolItem_setting_Text = "&設定変更";
+
         public string ModeName;
 
         public string IconName;
@@ -31,6 +34,12 @@ namespace ConvertibleClipboard
         public int MaxCharCount;
 
         public NotifyIcon notifyIcon;
+
+        public ContextMenuStrip contextMenuStrip;
+
+        public ToolStripMenuItem toolStripMenuItem_close;
+
+        public ToolStripMenuItem toolStripMenuItem_setting;
 
         public ModesClass()
         {
@@ -44,6 +53,24 @@ namespace ConvertibleClipboard
                 Visible = true,
                 Text = this.ModeName
             };
+
+            this.contextMenuStrip = new();
+            this.toolStripMenuItem_close = new()
+            {
+                Text = this.toolItem_close_Text
+            };
+            
+
+            this.toolStripMenuItem_setting = new()
+            {
+                Text = this.toolItem_setting_Text
+            };
+            
+
+            this.contextMenuStrip.Items.Add(this.toolStripMenuItem_close);
+            this.contextMenuStrip.Items.Add(this.toolStripMenuItem_setting);
+            this.notifyIcon.ContextMenuStrip = contextMenuStrip;
+
         }
 
 
@@ -78,6 +105,9 @@ namespace ConvertibleClipboard
             }
         }
 
+        /// <summary>
+        /// Change Mode with NotifyIcon
+        /// </summary>
         public void ChangeMode()
         {
             if (this.notifyIcon!=null)
@@ -89,7 +119,21 @@ namespace ConvertibleClipboard
             }
            
         }
-        
+
+        /// <summary>
+        /// Display retained clipboard text with notifBallon.
+        /// </summary>
+        public void NotifyBallonFnc(string txt)
+        {
+            if (this.notifyIcon != null)
+            {
+                this.notifyIcon.BalloonTipTitle = "MODE:" + this.ModeName;
+                this.notifyIcon.BalloonTipText = txt;
+                this.notifyIcon.ShowBalloonTip(5000);
+            }
+
+        }
+
 
 
 
