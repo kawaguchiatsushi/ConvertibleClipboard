@@ -156,8 +156,12 @@ namespace ConvertibleClipboard
 
                     if (ModesClass.ClipBMode == Clipboardmode.LineBreakDeleteMode || ModesClass.ClipBMode == Clipboardmode.FileMode)
                     {
-
+                        
                         globaltxt = charLang.MyReplacement(globaltxt);
+                        if (globaltxt != "" && globaltxt != null) 
+                        {
+                            //ModesClass.NotifyBallonFnc(globaltxt); 
+                        }
                     }
                     if (ModesClass.ClipBMode == Clipboardmode.FileMode)
                     {
@@ -170,7 +174,7 @@ namespace ConvertibleClipboard
                     {
                         Clipboard.Clear();
                         Clipboard.SetDataObject(globaltxt, true);
-                        ModesClass.NotifyBallonFnc(globaltxt);
+
                     }
                     AddClipboardFormatListener(this.Handle);
                 }

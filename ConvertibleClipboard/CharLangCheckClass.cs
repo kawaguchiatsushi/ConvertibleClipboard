@@ -21,7 +21,7 @@ namespace ConvertibleClipboard
         {
 
             int txtleng = text.Length;
-            int checkCount = 10;
+            int checkCount = 1;
             if (txtleng <= checkCount)
             {
                 throw new IndexOutOfRangeException();
@@ -48,12 +48,15 @@ namespace ConvertibleClipboard
                 
                 text = text.Replace(Environment.NewLine, " ");
                 text = text.Replace("\r", " ").Replace("\n", " ");
-                text = AdvancedReplacementforEngStrings(text);
+                //text = text.Replace(",", ", ").Replace(".",". ");
+                //text = AdvancedReplacementforEngStrings(text);
+                
                 return text;
             }
             else
             {
                 text = AdvancedReplacementforJapaneseStrings(text);
+                
                 return text;
             }
         }
